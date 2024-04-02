@@ -38,3 +38,6 @@ form.addEventListener("submit", function (e) {
       }, 3000);
     });
 });
+function openResume() {
+  window.open("/resume/ashokkumar-cv.pdf", "_blank");
+}
