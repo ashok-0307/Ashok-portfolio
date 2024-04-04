@@ -1,43 +1,26 @@
-const form = document.getElementById("form");
-const result = document.getElementById("result");
+function handleSubmit(event) {
+  event.preventDefault(); // Prevent default form submission
 
-form.addEventListener("submit", function (e) {
-  const formData = new FormData(form);
-  e.preventDefault();
-
-  const object = Object.fromEntries(formData);
-  const json = JSON.stringify(object);
-
-  result.innerHTML = "Please wait...";
-
-  fetch("https://api.web3forms.com/submit", {
+  // Send form data asynchronously
+  fetch(event.target.action, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: json,
+    body: new FormData(event.target),
   })
-    .then(async (response) => {
-      let json = await response.json();
-      if (response.status === 200) {
-        result.innerHTML = json.message;
+    .then((response) => {
+      if (response.ok) {
+        document.getElementById("result").innerText =
+          "Email sent successfully.";
       } else {
-        console.log(response);
-        result.innerHTML = json.message;
+        document.getElementById("result").innerText =
+          "Failed to send email. Please try again.";
       }
     })
     .catch((error) => {
-      console.log(error);
-      result.innerHTML = "Something went wrong!";
-    })
-    .then(function () {
-      form.reset();
-      setTimeout(() => {
-        result.style.display = "none";
-      }, 3000);
+      console.error("Error:", error);
+      document.getElementById("result").innerText =
+        "An error occurred. Please try again later.";
     });
-});
+}
 
 // Function to view resume
 function openResume() {
