@@ -1,26 +1,43 @@
-function handleSubmit(event) {
-  event.preventDefault(); // Prevent default form submission
+const form = document.getElementById("form");
+const result = document.getElementById("result");
 
-  // Send form data asynchronously
-  fetch(event.target.action, {
+form.addEventListener("submit", function (e) {
+  const formData = new FormData(form);
+  e.preventDefault();
+
+  const object = Object.fromEntries(formData);
+  const json = JSON.stringify(object);
+
+  result.innerHTML = "Please wait...";
+
+  fetch("https://api.web3forms.com/submit", {
     method: "POST",
-    body: new FormData(event.target),
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: json,
   })
-    .then((response) => {
-      if (response.ok) {
-        document.getElementById("result").innerText =
-          "Email sent successfully.";
+    .then(async (response) => {
+      let json = await response.json();
+      if (response.status === 200) {
+        result.innerHTML = json.message;
       } else {
-        document.getElementById("result").innerText =
-          "Failed to send email. Please try again.";
+        console.log(response);
+        result.innerHTML = json.message;
       }
     })
     .catch((error) => {
-      console.error("Error:", error);
-      document.getElementById("result").innerText =
-        "An error occurred. Please try again later.";
+      console.log(error);
+      result.innerHTML = "Something went wrong!";
+    })
+    .then(function () {
+      form.reset();
+      setTimeout(() => {
+        result.style.display = "none";
+      }, 3000);
     });
-}
+});
 
 // Function to view resume
 function openResume() {
