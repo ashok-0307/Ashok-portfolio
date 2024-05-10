@@ -8,7 +8,8 @@
   background-repeat: no-repeat;
   height: 95vh;
   padding: 250px 0;
-  color: white;
+  color: rgb(20, 19, 19);
+  font-weight: bolder;
 }
 .custom-width {
   width: 60%;
