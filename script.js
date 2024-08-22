@@ -41,5 +41,5 @@ form.addEventListener("submit", function (e) {
 
 // Function to view resume
 function openResume() {
-  window.open("/resume/Ashok_resume.pdf", "_blank");
+  window.open("/resume/Ashokkumar_resume.pdf");
 }
